@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        // PATH çevresel değişkeni, gerekli araçların bulunduğu dizini ekliyoruz
-        PATH = "/opt/homebrew/bin:$PATH"
-    }
-
     stages {
         stage('Checkout') {
             steps {
