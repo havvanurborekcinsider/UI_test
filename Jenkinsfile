@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Git reposunu çekmek için
-                git branch: 'main', url: 'https://github.com/havvanurborekcinsider/UI_test.git'
+                // Git reposunu SSH ile çekmek için
+                git branch: 'main', url: 'git@github.com:havvanurborekcinsider/UI_test.git'
             }
         }
 
