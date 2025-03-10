@@ -11,7 +11,7 @@ pipeline {
                 git(
                     branch: 'main', 
                     url: 'git@github.com:havvanurborekcinsider/UI_test.git', 
-                    credentialsId: '5d5ba3f8-727d-4160-9a8f-0686af04b0e3' // SSH anahtar kimlik bilgisi
+                    credentialsId: 'git_key' // SSH anahtar kimlik bilgisi
                 )
             }
         }
