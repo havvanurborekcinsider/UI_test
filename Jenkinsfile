@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Git reposunu çekmek için
-                git 'https://github.com/havvanurborekcinsider/UI_test.git'
+                git branch: 'main', url: 'https://github.com/havvanurborekcinsider/UI_test.git'
             }
         }
 
