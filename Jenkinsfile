@@ -2,24 +2,25 @@ pipeline {
     agent any
 
     environment {
-        REPO_URL = 'https://github.com/havvanurborekcinsider/UI_test.git'  // Repo URL'si
+        // PATH çevresel değişkeni, gerekli araçların bulunduğu dizini ekliyoruz
+        PATH = "/opt/homebrew/bin:$PATH"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // GitHub reposunu checkout edin
-                git branch: 'main', url: "$REPO_URL"
+                // Git reposunu çekmek için
+                git 'https://github.com/havvanurborekcinsider/UI_test.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Gereksinimleri yükleyin (örneğin Node.js, Python veya başka bir framework)
-                    sh 'npm install'  // Eğer Node.js ile çalışıyorsanız
-                    // veya
-                    // sh 'pip install -r requirements.txt'  // Eğer Python ile çalışıyorsanız
+                    // Bağımlılıkları yükle
+                    sh '''#!/bin/bash
+                    npm install
+                    '''
                 }
             }
         }
@@ -27,8 +28,10 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    // UI testlerini çalıştırın
-                    sh 'pytest --maxfail=1 --disable-warnings -q'
+                    // Testleri çalıştır
+                    sh '''#!/bin/bash
+                    npm test
+                    '''
                 }
             }
         }
@@ -36,23 +39,28 @@ pipeline {
         stage('Generate Allure Report') {
             steps {
                 script {
-                    // Allure raporunu oluşturun
-                    sh 'allure generate allure-results --clean -o allure-report'
+                    // Allure raporu oluştur
+                    sh '''#!/bin/bash
+                    allure generate --clean
+                    '''
                 }
             }
         }
 
         stage('Publish Allure Report') {
             steps {
-                allure includeProperties: false, jdk: '', results: [[path: 'allure-report']]
+                script {
+                    // Allure raporunu yayımla
+                    allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+                }
             }
         }
     }
 
     post {
         always {
-            // Testlerin ardından raporları ve ekran görüntülerini saklayın
-            archiveArtifacts allowEmptyArchive: true, artifacts: '**/allure-report/**'
+            // Pipeline sonrası her durumda bu adımlar çalışır
+            echo 'Pipeline completed'
         }
     }
 }
