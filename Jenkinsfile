@@ -47,17 +47,6 @@ pipeline {
             }
         }
 
-        stage('Install npm Dependencies') {
-            steps {
-                sh '''
-                set -e
-                if ! npm list -g; then
-                    npm install
-                fi
-                '''
-            }
-        }
-
         stage('Install ChromeDriver') {
             steps {
                 sh '''
@@ -73,7 +62,7 @@ pipeline {
             steps {
                 sh '''
                 set -e
-                npm test
+                python3 lcw_test.py  # Python testini çalıştır
                 '''
             }
         }
