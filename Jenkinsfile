@@ -69,6 +69,7 @@ pipeline {
                 if ! brew list allure; then
                     brew install allure
                 fi
+                export PATH=$PATH:/opt/homebrew/bin  # Allure'ın bulunduğu dizini PATH'e ekleyin
                 '''
             }
         }
