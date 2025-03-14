@@ -44,9 +44,9 @@ pipeline {
                 fi
                 python3 -m venv venv
                 source venv/bin/activate
-                pip install pytest  # pytest kurulumu
-                pip install selenium  # selenium kurulumu
-                pip install allure-pytest  # allure-pytest kurulumu
+                pip install pytest
+                pip install selenium
+                pip install allure-pytest
                 '''
             }
         }
@@ -69,7 +69,18 @@ pipeline {
                 if ! brew list allure; then
                     brew install allure
                 fi
-                export PATH=$PATH:/opt/homebrew/bin  # Allure'ın bulunduğu dizini PATH'e ekleyin
+                echo "Allure installed at: $(which allure)"
+                '''
+            }
+        }
+
+        stage('Verify Allure Installation') {
+            steps {
+                sh '''
+                set -e
+                export PATH="/opt/homebrew/bin:$PATH"
+                echo "Verifying Allure installation..."
+                allure --version
                 '''
             }
         }
@@ -88,6 +99,7 @@ pipeline {
             steps {
                 sh '''
                 set -e
+                export PATH="/opt/homebrew/bin:$PATH"
                 mkdir -p allure-results
                 allure generate allure-results --clean -o allure-report
                 '''
