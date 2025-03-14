@@ -45,6 +45,7 @@ pipeline {
                 python3 -m venv venv
                 source venv/bin/activate
                 pip install pytest  # pytest kurulumu
+                pip install selenium  # selenium kurulumu
                 '''
             }
         }
