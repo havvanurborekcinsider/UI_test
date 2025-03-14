@@ -44,9 +44,11 @@ pipeline {
                 if ! brew list python; then
                     brew install python
                 fi
-                # Python bağımlılıklarını yükle (örneğin pytest)
-                export PATH=$PATH:/opt/homebrew/bin
-                pip3 install -r requirements.txt
+                # Virtual Environment oluştur
+                python3 -m venv venv
+                source venv/bin/activate
+                # Python bağımlılıklarını yükle
+                pip install -r requirements.txt
                 '''
             }
         }
@@ -77,6 +79,7 @@ pipeline {
             steps {
                 sh '''
                 set -e
+                source venv/bin/activate
                 python3 lcw_test.py
                 '''
             }
