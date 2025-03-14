@@ -60,6 +60,17 @@ pipeline {
             }
         }
 
+        stage('Install Allure') {
+            steps {
+                sh '''
+                set -e
+                if ! brew list allure; then
+                    brew install allure
+                fi
+                '''
+            }
+        }
+
         stage('Run Tests') {
             steps {
                 sh '''
