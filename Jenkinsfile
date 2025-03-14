@@ -45,6 +45,8 @@ pipeline {
                 if ! brew list python; then
                     brew install python
                 fi
+                # Python bağımlılıklarını yükle (örneğin pytest)
+                pip install -r requirements.txt
                 '''
             }
         }
