@@ -28,11 +28,10 @@ pipeline {
         stage('Check File Paths and Permissions') {
             steps {
                 script {
-                    // Geçerli dizini kontrol et ve dosya listesi yazdır
                     sh '''
-                    echo "Current directory: $(pwd)"  # Geçerli dizini yazdırır
+                    echo "Current directory: $(pwd)"
                     echo "Listing files in current directory"
-                    ls -l  # Geçerli dizindeki dosyaları listeler
+                    ls -l
                     '''
                 }
             }
@@ -46,7 +45,8 @@ pipeline {
                     brew install python
                 fi
                 # Python bağımlılıklarını yükle (örneğin pytest)
-                pip install -r requirements.txt
+                export PATH=$PATH:/opt/homebrew/bin
+                pip3 install -r requirements.txt
                 '''
             }
         }
@@ -77,7 +77,7 @@ pipeline {
             steps {
                 sh '''
                 set -e
-                python3 lcw_test.py  # Python testini çalıştır
+                python3 lcw_test.py
                 '''
             }
         }
@@ -87,7 +87,6 @@ pipeline {
                 sh '''
                 set -e
                 mkdir -p allure-results
-                # Allure raporunu oluştur
                 allure generate allure-results --clean -o allure-report
                 '''
             }
