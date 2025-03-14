@@ -78,4 +78,7 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline comp
+            echo 'Pipeline completed'
+        }
+    }
+}
