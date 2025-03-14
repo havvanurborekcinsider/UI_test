@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Workspace Cleanup') {
             steps {
-                deleteDir()  // Çalışma alanını temizle
+                sh 'rm -rf * || echo "Workspace zaten temiz"'
             }
         }
 
