@@ -1,35 +1,39 @@
 pipeline {
     agent any
 
+    environment {
+        PATH = "/opt/homebrew/bin:$PATH"
+    }
+
     stages {
         stage('Checkout') {
             steps {
                 // Git reposunu çek
                 git(
-                    url: 'git@github.com:havvanurborekcinsider/UI_test.git', 
                     branch: 'main', 
-                    credentialsId: 'git_key' // Yukarıda tanımladığınız kimlik bilgisi
+                    url: 'git@github.com:havvanurborekcinsider/UI_test.git', 
+                    credentialsId: 'git_key'
                 )
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                // Bağımlılıkları yükle
-                sh 'npm install'
+                // npm yükleme yolunu belirterek bağımlılıkları yükle
+                sh '/opt/homebrew/bin/npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Testleri çalıştır
-                sh 'npm test'
+                // npm test komutunu belirli yoldan çalıştır
+                sh '/opt/homebrew/bin/npm test'
             }
         }
 
         stage('Generate Allure Report') {
             steps {
-                // Allure raporu oluştur
+                // Allure raporunu oluştur
                 sh 'allure generate allure-results --clean'
             }
         }
@@ -37,11 +41,7 @@ pipeline {
         stage('Publish Allure Report') {
             steps {
                 // Allure raporunu yayımla
-                allure(
-                    includeProperties: false, 
-                    jdk: '', 
-                    results: [[path: 'allure-results']]
-                )
+                allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             }
         }
     }
