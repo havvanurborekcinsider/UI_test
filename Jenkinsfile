@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Workspace Cleanup') {
             steps {
-                sh 'rm -rf * || echo "Workspace zaten temiz"'
+                echo 'Workspace cleanup skipped'  // Bu adım artık atlanacak
             }
         }
 
@@ -17,39 +17,55 @@ pipeline {
                 git(
                     branch: 'main', 
                     url: 'git@github.com:havvanurborekcinsider/UI_test.git', 
-                    credentialsId: 'git_key'
+                    credentialsId: 'git_key' // Burada doğru ID olduğundan emin olun!
                 )
             }
         }
 
         stage('Install Python & Dependencies') {
             steps {
-                sh 'brew install python || echo "Python zaten yüklü"'
-                sh 'pip3 install selenium || echo "Selenium zaten yüklü"'
+                sh '''
+                set -e
+                brew list python || brew install python
+                pip3 install -r requirements.txt || echo "Gerekli paketler zaten yüklü"
+                '''
             }
         }
 
         stage('Install npm Dependencies') {
             steps {
-                sh '/bin/bash -c "/opt/homebrew/bin/npm install"'
+                sh '''
+                set -e
+                npm install
+                '''
             }
         }
 
         stage('Install ChromeDriver') {
             steps {
-                sh 'brew install chromedriver || echo "ChromeDriver zaten yüklü"'
+                sh '''
+                set -e
+                brew list chromedriver || brew install chromedriver
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh '/bin/bash -c "npm test"'
+                sh '''
+                set -e
+                npm test
+                '''
             }
         }
 
         stage('Generate Allure Report') {
             steps {
-                sh '/bin/bash -c "allure generate allure-results --clean"'
+                sh '''
+                set -e
+                mkdir -p allure-results
+                allure generate allure-results --clean
+                '''
             }
         }
 
@@ -62,7 +78,4 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline completed'
-        }
-    }
-}
+            echo 'Pipeline comp
