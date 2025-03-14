@@ -17,23 +17,44 @@ pipeline {
             }
         }
 
+        stage('Install Python') {
+            steps {
+                // Python'ı yükleyin (eğer yüklenmemişse)
+                sh 'brew install python'
+            }
+        }
+
+        stage('Install Python Dependencies') {
+            steps {
+                // Python bağımlılıklarını yükle (selenium gibi)
+                sh 'pip3 install selenium'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                // npm yükleme yolunu belirterek bağımlılıkları yükle
+                // npm bağımlılıklarını yükle
                 sh '/bin/bash -c "/opt/homebrew/bin/npm install"'
+            }
+        }
+
+        stage('Install ChromeDriver') {
+            steps {
+                // ChromeDriver'ı yükle (Selenium için gerekli)
+                sh 'brew install chromedriver'
             }
         }
 
         stage('Run Tests') {
             steps {
-                // npm test komutunu belirli yoldan çalıştır
+                // Testleri çalıştır
                 sh '/bin/bash -c "/opt/homebrew/bin/npm test"'
             }
         }
 
         stage('Generate Allure Report') {
             steps {
-                // Allure raporunu oluştur
+                // Allure raporu oluştur
                 sh '/bin/bash -c "allure generate allure-results --clean"'
             }
         }
