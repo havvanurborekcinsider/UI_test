@@ -85,14 +85,15 @@ pipeline {
                 sh '''
                 set -e
                 mkdir -p allure-results
-                allure generate allure-results --clean
+                # Allure raporunu oluştur
+                allure generate allure-results --clean -o allure-report
                 '''
             }
         }
 
         stage('Publish Allure Report') {
             steps {
-                allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+                allure includeProperties: false, jdk: '', results: [[path: 'allure-report']]
             }
         }
     }
