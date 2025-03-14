@@ -18,7 +18,7 @@ pipeline {
                 git(
                     branch: 'main', 
                     url: 'git@github.com:havvanurborekcinsider/UI_test.git', 
-                    credentialsId: 'git_key'
+                    credentialsId: 'github_key'
                 )
             }
         }
