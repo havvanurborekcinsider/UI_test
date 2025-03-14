@@ -46,6 +46,7 @@ pipeline {
                 source venv/bin/activate
                 pip install pytest  # pytest kurulumu
                 pip install selenium  # selenium kurulumu
+                pip install allure-pytest  # allure-pytest kurulumu
                 '''
             }
         }
