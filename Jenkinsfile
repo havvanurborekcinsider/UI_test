@@ -20,21 +20,21 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // npm yükleme yolunu belirterek bağımlılıkları yükle
-                sh '/opt/homebrew/bin/npm install'
+                sh '/bin/bash -c "/opt/homebrew/bin/npm install"'
             }
         }
 
         stage('Run Tests') {
             steps {
                 // npm test komutunu belirli yoldan çalıştır
-                sh '/opt/homebrew/bin/npm test'
+                sh '/bin/bash -c "/opt/homebrew/bin/npm test"'
             }
         }
 
         stage('Generate Allure Report') {
             steps {
                 // Allure raporunu oluştur
-                sh 'allure generate allure-results --clean'
+                sh '/bin/bash -c "allure generate allure-results --clean"'
             }
         }
 
