@@ -28,9 +28,9 @@ pipeline {
                 script {
                     // Geçerli dizini kontrol et ve dosya listesi yazdır
                     sh '''
-                    echo "Current directory: $(pwd)"  // Geçerli dizini yazdırır
+                    echo "Current directory: $(pwd)"  # Geçerli dizini yazdırır
                     echo "Listing files in current directory"
-                    ls -l  // Geçerli dizindeki dosyaları listeler
+                    ls -l  # Geçerli dizindeki dosyaları listeler
                     '''
                 }
             }
