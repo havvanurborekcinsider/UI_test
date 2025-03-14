@@ -5,7 +5,11 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Git reposunu çek
-                git 'git@github.com:havvanurborekcinsider/UI_test.git'
+                git(
+                    url: 'git@github.com:havvanurborekcinsider/UI_test.git', 
+                    branch: 'main', 
+                    credentialsId: 'git_key' // Yukarıda tanımladığınız kimlik bilgisi
+                )
             }
         }
 
@@ -33,7 +37,11 @@ pipeline {
         stage('Publish Allure Report') {
             steps {
                 // Allure raporunu yayımla
-                allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+                allure(
+                    includeProperties: false, 
+                    jdk: '', 
+                    results: [[path: 'allure-results']]
+                )
             }
         }
     }
