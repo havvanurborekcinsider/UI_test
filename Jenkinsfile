@@ -6,16 +6,14 @@ pipeline {
     }
 
     stages {
-        stage('Clean Workspace') {
+        stage('Workspace Cleanup') {
             steps {
-                // Workspace'i temizle
-                cleanWs()
+                deleteDir()  // Çalışma alanını temizle
             }
         }
 
         stage('Checkout') {
             steps {
-                // Git reposunu çek
                 git(
                     branch: 'main', 
                     url: 'git@github.com:havvanurborekcinsider/UI_test.git', 
@@ -24,51 +22,39 @@ pipeline {
             }
         }
 
-        stage('Install Python') {
+        stage('Install Python & Dependencies') {
             steps {
-                // Python'ı yükleyin (eğer yüklenmemişse)
-                sh 'brew install python'
+                sh 'brew install python || echo "Python zaten yüklü"'
+                sh 'pip3 install selenium || echo "Selenium zaten yüklü"'
             }
         }
 
-        stage('Install Python Dependencies') {
+        stage('Install npm Dependencies') {
             steps {
-                // Python bağımlılıklarını yükle (selenium gibi)
-                sh '/opt/homebrew/bin/pip3 install selenium'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                // npm bağımlılıklarını yükle
                 sh '/bin/bash -c "/opt/homebrew/bin/npm install"'
             }
         }
 
         stage('Install ChromeDriver') {
             steps {
-                // ChromeDriver'ı yükle (Selenium için gerekli)
-                sh 'brew install chromedriver'
+                sh 'brew install chromedriver || echo "ChromeDriver zaten yüklü"'
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Testleri çalıştır
-                sh '/bin/bash -c "/opt/homebrew/bin/npm test"'
+                sh '/bin/bash -c "npm test"'
             }
         }
 
         stage('Generate Allure Report') {
             steps {
-                // Allure raporu oluştur
                 sh '/bin/bash -c "allure generate allure-results --clean"'
             }
         }
 
         stage('Publish Allure Report') {
             steps {
-                // Allure raporunu yayımla
                 allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             }
         }
@@ -76,7 +62,6 @@ pipeline {
 
     post {
         always {
-            // Pipeline sonrası mesaj
             echo 'Pipeline completed'
         }
     }
