@@ -6,6 +6,13 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                // Workspace'i temizle
+                cleanWs()
+            }
+        }
+
         stage('Checkout') {
             steps {
                 // Git reposunu çek
@@ -27,7 +34,7 @@ pipeline {
         stage('Install Python Dependencies') {
             steps {
                 // Python bağımlılıklarını yükle (selenium gibi)
-                sh 'pip3 install selenium'
+                sh '/opt/homebrew/bin/pip3 install selenium'
             }
         }
 
