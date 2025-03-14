@@ -27,28 +27,23 @@ pipeline {
 
         stage('Check File Paths and Permissions') {
             steps {
-                script {
-                    sh '''
-                    echo "Current directory: $(pwd)"
-                    echo "Listing files in current directory"
-                    ls -l
-                    '''
-                }
+                sh '''
+                echo "Current directory: $(pwd)"
+                echo "Listing files in current directory"
+                ls -l
+                '''
             }
         }
 
-        stage('Install Python & Dependencies') {
+        stage('Install Python') {
             steps {
                 sh '''
                 set -e
                 if ! brew list python; then
                     brew install python
                 fi
-                # Virtual Environment oluştur
                 python3 -m venv venv
                 source venv/bin/activate
-                # Python bağımlılıklarını yükle
-                pip install -r requirements.txt
                 '''
             }
         }
