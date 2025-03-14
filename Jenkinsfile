@@ -23,15 +23,25 @@ pipeline {
             }
         }
 
+        stage('Check File Paths and Permissions') {
+            steps {
+                script {
+                    // Geçerli dizini kontrol et ve dosya listesi yazdır
+                    sh '''
+                    echo "Current directory: $(pwd)"  // Geçerli dizini yazdırır
+                    echo "Listing files in current directory"
+                    ls -l  // Geçerli dizindeki dosyaları listeler
+                    '''
+                }
+            }
+        }
+
         stage('Install Python & Dependencies') {
             steps {
                 sh '''
                 set -e
                 if ! brew list python; then
                     brew install python
-                fi
-                if ! pip3 show -q -f requirements.txt; then
-                    pip3 install -r requirements.txt || echo "Gerekli paketler zaten yüklü"
                 fi
                 '''
             }
