@@ -43,7 +43,7 @@ pipeline {
                 script {
                     // Allure raporu oluştur
                     sh '''#!/bin/bash
-                    allure generate --clean
+                    allure generate allure-results --clean
                     '''
                 }
             }
