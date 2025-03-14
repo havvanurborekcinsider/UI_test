@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // OpenJDK 17 için JAVA_HOME ve PATH ayarları
-        JAVA_HOME = '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home'
+        JAVA_HOME = '/opt/homebrew/opt/openjdk@17'
         PATH = "${JAVA_HOME}/bin:/opt/homebrew/bin:$PATH"  // JAVA_HOME'u PATH'e ekliyoruz
         JAVA_OPTS = "-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=86400"
     }
