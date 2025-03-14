@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         PATH = "/opt/homebrew/bin:$PATH"
+        JAVA_OPTS = "-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=86400"
     }
 
     stages {
