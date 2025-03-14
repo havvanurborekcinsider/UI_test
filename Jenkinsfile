@@ -1,5 +1,5 @@
 pipeline {
-    agent none  // Agent kullanmıyoruz, sadece main node
+    agent any  // Built-In Node kullanarak çalışacak
 
     environment {
         PATH = "/opt/homebrew/bin:$PATH"
@@ -8,25 +8,22 @@ pipeline {
 
     stages {
         stage('Workspace Cleanup') {
-            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
-                echo 'Workspace cleanup skipped'  // Bu adım artık atlanacak
+                echo 'Workspace cleanup skipped'
             }
         }
 
         stage('Checkout') {
-            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 git(
                     branch: 'main', 
                     url: 'git@github.com:havvanurborekcinsider/UI_test.git', 
-                    credentialsId: 'git_key' // Burada doğru ID olduğundan emin olun!
+                    credentialsId: 'git_key'
                 )
             }
         }
 
         stage('Install Python & Dependencies') {
-            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -37,7 +34,6 @@ pipeline {
         }
 
         stage('Install npm Dependencies') {
-            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -47,7 +43,6 @@ pipeline {
         }
 
         stage('Install ChromeDriver') {
-            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -57,7 +52,6 @@ pipeline {
         }
 
         stage('Run Tests') {
-            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -67,7 +61,6 @@ pipeline {
         }
 
         stage('Generate Allure Report') {
-            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -78,7 +71,6 @@ pipeline {
         }
 
         stage('Publish Allure Report') {
-            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             }
