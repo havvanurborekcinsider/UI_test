@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // Built-In Node kullanarak çalışacak
+    agent any
 
     environment {
         PATH = "/opt/homebrew/bin:$PATH"
@@ -27,8 +27,12 @@ pipeline {
             steps {
                 sh '''
                 set -e
-                brew list python || brew install python
-                pip3 install -r requirements.txt || echo "Gerekli paketler zaten yüklü"
+                if ! brew list python; then
+                    brew install python
+                fi
+                if ! pip3 show -q -f requirements.txt; then
+                    pip3 install -r requirements.txt || echo "Gerekli paketler zaten yüklü"
+                fi
                 '''
             }
         }
@@ -37,7 +41,9 @@ pipeline {
             steps {
                 sh '''
                 set -e
-                npm install
+                if ! npm list -g; then
+                    npm install
+                fi
                 '''
             }
         }
@@ -46,7 +52,9 @@ pipeline {
             steps {
                 sh '''
                 set -e
-                brew list chromedriver || brew install chromedriver
+                if ! brew list chromedriver; then
+                    brew install chromedriver
+                fi
                 '''
             }
         }
