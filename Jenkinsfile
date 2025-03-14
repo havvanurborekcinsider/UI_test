@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none  // Agent kullanmıyoruz, sadece main node
 
     environment {
         PATH = "/opt/homebrew/bin:$PATH"
@@ -8,12 +8,14 @@ pipeline {
 
     stages {
         stage('Workspace Cleanup') {
+            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 echo 'Workspace cleanup skipped'  // Bu adım artık atlanacak
             }
         }
 
         stage('Checkout') {
+            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 git(
                     branch: 'main', 
@@ -24,6 +26,7 @@ pipeline {
         }
 
         stage('Install Python & Dependencies') {
+            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -34,6 +37,7 @@ pipeline {
         }
 
         stage('Install npm Dependencies') {
+            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -43,6 +47,7 @@ pipeline {
         }
 
         stage('Install ChromeDriver') {
+            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -52,6 +57,7 @@ pipeline {
         }
 
         stage('Run Tests') {
+            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -61,6 +67,7 @@ pipeline {
         }
 
         stage('Generate Allure Report') {
+            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 sh '''
                 set -e
@@ -71,6 +78,7 @@ pipeline {
         }
 
         stage('Publish Allure Report') {
+            agent { label 'main' }  // Main node üzerinde çalışacak
             steps {
                 allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             }
